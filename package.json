@@ -1,0 +1,21 @@
+{
+  "name": "cc-nyscaa",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "autoprefixer": "^6.4.0",
+    "cssnano": "^3.7.3",
+    "grunt-autoprefixer": "^3.0.4",
+    "grunt-contrib-imagemin": "^1.0.1",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-less": "^1.4.0",
+    "grunt-contrib-uglify": "^2.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-cssnano": "^2.1.0",
+    "grunt-jsvalidate": "^0.2.2",
+    "grunt-postcss": "^0.8.0",
+    "load-grunt-tasks": "^3.5.2",
+    "matchdep": "latest"
+  },
+  "license": "GPL-2.0+",
+  "version": "1.0.0"
+}

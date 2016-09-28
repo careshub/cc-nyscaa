@@ -19,7 +19,7 @@
  * @return  int The group ID
  */
 function nyscaa_get_group_id(){
-	$location = get_site_url();
+	$location = get_site_url( null, '', 'http' );
 	switch ( $location ) {
 		case 'http://commonsdev.local':
 			$group_id = 542;

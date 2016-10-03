@@ -214,14 +214,15 @@ function nyscaa_poverty_report() {
           break;
       }
       
-      // get location information - NameLSAD|City|Map|Address1|Address2|Phone|NYSCAA|Logo|Url|FIPS
+      // get location information - NameLSAD|City|CountyMap|CityMap|Address1|Address2|Phone|NYSCAA|Logo|Url|FIPS
       $location_data = nyscaa_report_get_json($geoid, $sum_level, '0');
       
       // get logo
-      $location_logo = ($location_data[7] == "") ? "": $plugin_url . "/images/logos/" . $location_data[7];
+      $location_logo = ($location_data[8] == "") ? "": $plugin_url . "/images/logos/" . $location_data[8];
       
-      // get map
-      $location_map = ($location_data[2] == "")? $location_logo: $plugin_url . "/images/maps/" . $location_data[2];
+      // get map - use county map if county-level report or city map not available
+      $location_map = ($sum_level != "city" || $location_data[3] == "")? $location_data[2]: $location_data[3];
+      $location_map = ($location_map == "")? $location_logo: $plugin_url . "/images/maps/" . $location_map;
       
       // get general poverty data
       $poverty_data = nyscaa_report_get_json($geoid, $sum_level, '6240');
@@ -237,11 +238,11 @@ function nyscaa_poverty_report() {
                 <img src="<?php echo $location_map?>" />
           </div>
           <div id="nyscaa-report-address">
-            <?php echo $location_data[3] ?>
-            <br />
             <?php echo $location_data[4] ?>
             <br />
             <?php echo $location_data[5] ?>
+            <br />
+            <?php echo $location_data[6] ?>
           </div>
           <p></p>
           <div class="center-align font-bold font-mid">
@@ -328,10 +329,10 @@ function nyscaa_poverty_report() {
           </div>
 
           <div style="font-weight:700; font-size:14pt; line-height: 1.5;">
-            <?php echo $location_data[6] ?>
+            <?php echo $location_data[7] ?>
           </div>
           <div style="font-weight:500; font-size: 12pt;">
-            <a href="http://<?php echo $location_data[8]?>" target="_blank"><?php echo $location_data[8]?></a>
+            <a href="http://<?php echo $location_data[9]?>" target="_blank"><?php echo $location_data[9]?></a>
           </div>
           
           <div id="nyscaa-report-content-race" class="section-spacing">
@@ -527,13 +528,13 @@ function nyscaa_poverty_report() {
 
               <div id="gender-part1-b" style="padding-top: 20px;" class="center-align">
                 <img src="<?php echo $plugin_url?>/images/male.png" style="height: 70px"/>
-                  <div class="dark-blue-text">Median Income</div>
+                  <div class="dark-blue-text">Median Earnings</div>
                   <b>$<?php echo $earning_data[1]?></b>
               </div>
 
               <div id="gender-part1-b" style="padding-top: 20px;" class="center-align">
                 <img src="<?php echo $plugin_url?>/images/female.png" style="height: 70px"/>
-                  <div class="dark-blue-text">Median Income</div>
+                  <div class="dark-blue-text">Median Earnings</div>
                 <b>
                   $<?php echo $earning_data[2]?>
                 </b>
@@ -564,7 +565,7 @@ function nyscaa_poverty_report() {
                     echo "<img src='" . $plugin_url . "/images/light-blue-dot.png' />";
                     
                     // get county poverty data
-                    $poverty_data = nyscaa_report_get_json('05000US' . preg_replace( '/[^0-9.]/', '', $location_data[9]), 'county', '6240');
+                    $poverty_data = nyscaa_report_get_json('05000US' . preg_replace( '/[^0-9.]/', '', $location_data[10]), 'county', '6240');
                     echo $location_data[0] . " Poverty Rate: " . nyscaa_report_format_pct( $poverty_data[7] );
                   }
                 ?>

@@ -27,6 +27,10 @@
     clear: both;
     font-size: 100%;
     margin-bottom: @margin-bottom;
+    word-wrap: normal;
+    -webkit-hyphens: none;
+	-moz-hyphens: none;
+	hyphens: none;
      p {
          margin-bottom: 15px;
          line-height: 1.4em;
@@ -67,6 +71,7 @@
      .clear-float {
          clear: both;
      }
+
      #nyscaa-report-datakey {
          p {
             font-size: 13px;
@@ -148,8 +153,8 @@
         }
 
         #nyscaa-report-content-left{
-            #nyscaa-report-map img{
-                width: 100%;
+            #nyscaa-report-map img {
+                max-width: 250px;
             }
             #nyscaa-report-popnote{
                 font-style: italic;
@@ -377,14 +382,15 @@
                float: right;
            }
            #nyscaa-report-content-left{
-                width: 20.8%;
-                margin-right: 3%;
+                border-right: 20px solid @light-blue;
+                width: 22.9%;
+                padding-right: 2%;
                 float: left;
                 clear: both;
             }
             #nyscaa-report-content-right {
-                border-left: 20px solid @light-blue;
-                width: 72%;
+
+                width: 71%;
                 float: left;
                 padding-left: 10px;
             }

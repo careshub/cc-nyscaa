@@ -4,4 +4,7 @@
 # Mac stuff
 .DS_Store
 
+# Visual Studio
+*.pubxml
+
 node_modules/**

@@ -25,13 +25,8 @@ function nyscaa_get_group_id(){
 			$group_id = 542;
 			break;
 		case 'http://dev.communitycommons.org':
-			$group_id = 0;
-			break;
-		case 'http://staging.communitycommons.org':
-			$group_id = 593;
-			break;
 		case 'http://www.communitycommons.org':
-		case 'http://abydos.cares.missouri.edu':
+		case 'http://staging.communitycommons.org':
 			$group_id = 696;
 			break;
 		default:

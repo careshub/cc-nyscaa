@@ -1,10 +1,10 @@
 <?php
 /**
- * Template tag for outputting the SA Leader Report.
+ * Template tag for outputting the NYSCAA Poverty Report.
  *
- * Community Commons Salud America
+ * Community Commons NYSCAA
  *
- * @package   Community_Commons_Salud_America
+ * @package   Community_Commons_NYSCAA
  * @author    Yan Barnett
  * @license   GPL-2.0+
  * @link      http://www.communitycommons.org
@@ -601,7 +601,7 @@ function nyscaa_report_console_log( $data ){
 
 // get json object from API service
 function nyscaa_report_get_json($area_ids, $area_type = 'county', $data_id='0'){
-	$api_url = 'http://servicestest.communitycommons.org/api-report/v1/indicator/NYSCAA-Poverty/';
+	$api_url = 'https://services.communitycommons.org/api-report/v1/indicator/NYSCAA-Poverty/';
 	$api_url .= $data_id . '?area_ids=' . $area_ids . '&area_type=' . $area_type;
   nyscaa_report_console_log($api_url);
 	$result = file_get_contents($api_url);

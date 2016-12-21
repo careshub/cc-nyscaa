@@ -8,3 +8,5 @@
 *.pubxml
 
 node_modules/**
+*.pubxml
+App_Data/PublishProfiles/ccstaging.pubxml

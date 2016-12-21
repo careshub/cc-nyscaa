@@ -4,7 +4,7 @@
 
     // Go when the DOM is ready
     $(function () {
-        var apiHost = "http://servicestest.communitycommons.org/";
+        var apiHost = "https://services.communitycommons.org/";
         var state = "New York";
         var sum_level = "state";
 

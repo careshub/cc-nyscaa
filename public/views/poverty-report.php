@@ -511,7 +511,12 @@ function nyscaa_poverty_report() {
                 <div class="nyscaa-report-content-title3">Free/Reduced Lunch Program</div>
                 <p></p>
                 <img src="<?php echo $plugin_url?>/images/school-lunch.png" style="height: 50px"/>
-                  <span style="font-size: 50pt; line-height: 1; font-family: Bodoni MT,Garamond,Times New Roman,serif;" class="dark-blue-text">48%</span>
+                  <span style="font-size: 50pt; line-height: 1; font-family: Bodoni MT,Garamond,Times New Roman,serif;" class="dark-blue-text">
+                    <?php
+                    $fr_lunch_data = nyscaa_report_get_json($geoid, $sum_level, '6144'); 
+                    echo nyscaa_report_format_pct($fr_lunch_data[3], 0);
+                    ?>
+                  </span>
                 <?php endif; ?>
               </div>
             </div>
@@ -612,10 +617,10 @@ function nyscaa_report_get_json($area_ids, $area_type = 'county', $data_id='0'){
 }
 
 // write the percentage in single digit format
-function nyscaa_report_format_pct($value){
+function nyscaa_report_format_pct($value, $digit = 1){
 	if ($value == 0) {
 		return "0%";
 	}else{
-		return number_format($value, 1) . "%";
+		return number_format($value, $digit) . "%";
 	}
 }

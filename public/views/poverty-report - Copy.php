@@ -237,11 +237,6 @@ function nyscaa_poverty_report() {
           <div id="nyscaa-report-map">
                 <img src="<?php echo $location_map?>" />
           </div>
-          <?php if ($location_logo != "" && $sum_level != "state"): ?>
-          <div id="nyscaa-report-logo">
-            <img src="<?php echo $location_logo ?>" />
-          </div>
-          <?php endif; ?>
           <div id="nyscaa-report-address">
             <?php echo $location_data[4] ?>
             <br />
@@ -324,7 +319,11 @@ function nyscaa_poverty_report() {
         </div>
         
         <div id="nyscaa-report-content-right">
-
+          <?php if ($location_logo != "" && $sum_level != "state"): ?>
+          <div style="float: right; margin-left: 10px; text-align: right;">
+            <img src="<?php echo $location_logo ?>" style="max-height:70px; max-width: 170px;" />
+            </div>
+          <?php endif; ?>
           <div style="font-weight:700; font-size:20pt;">
             <?php echo ($sum_level == "city")? $location_data[1]: $location_data[0] ?>
           </div>
@@ -332,7 +331,7 @@ function nyscaa_poverty_report() {
           <div style="font-weight:700; font-size:14pt; line-height: 1.5;">
             <?php echo $location_data[7] ?>
           </div>
-          <div style="font-weight:500; font-size: 12pt; margin-bottom: 20px;">
+          <div style="font-weight:500; font-size: 12pt;">
             <a href="http://<?php echo $location_data[9]?>" target="_blank"><?php echo $location_data[9]?></a>
           </div>
           

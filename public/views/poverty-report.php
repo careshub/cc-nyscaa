@@ -43,7 +43,13 @@ function nyscaa_poverty_report() {
         <div class="nyscaa-report-type">
           <p><b>New York State Poverty Report:</b></p>
           <ul>
-            <li><a href="?geoid=04000US36">NY State Profile</a></li>
+            <li><a href="?geoid=04000US36">NY State Poverty Profile</a></li>
+            <li>
+              <a href="?geoid=01000US">US Poverty Profile</a>
+            </li>
+            <li>
+              <a href="?geoid=county-poverty">A Comparative Look at County Poverty Levels</a>
+            </li>
             <li><a href="?geoid=datakey">Data Key</a></li>
           </ul>
           <div id="report-wait-state" class="report-processing-msg">Loading your report, please wait...</div>
@@ -101,7 +107,7 @@ function nyscaa_poverty_report() {
             household and at least one child under 18 that are living in poverty.</p>
           <div class="nyscaa-report-datakey-note center-align">
             <p>
-            ALL Census Reports cited are from the American Communities Survey FIVE year estimates (2010 - 2014). <br />
+            ALL Census Reports cited are from the American Communities Survey FIVE year estimates (2011 - 2015). <br />
             Access these reports at: <a href="http://factfinder2.census.gov" target="_blank">factfinder2.census.gov</a>
             </p>
           </div>
@@ -159,14 +165,14 @@ function nyscaa_poverty_report() {
                 The wage listed is the wage an individual would need to earn as the sole provider for a household consisting
                 of themselves and one child based on the typical expenses in that county or city. This wage is a minimum estimate of the
                 cost of living for a low wage family. Data from Massachusetts Institute of Technology Living Wage Calculator
-                (<a href="http://www.livingwage.mit.edu" target="_blank">www.livingwage.mit.edu</a>).
+                (<a href="http://livingwage.mit.edu" target="_blank">livingwage.mit.edu</a>), released in June 2016.
               </p>
               <p>
                 <b>Hourly Wage -</b>
                 The hourly rate listed is that which one person would need to earn working year round, 40 hours per
                 week in order to afford a 2 bedroom apartment at the fair market rate (FMR) for that county, assuming 30% of income
                 is spent on housing. Data is provided by the National Low Income Housing Coalition's report: 
-                Out of Reach 2015 (<a href="http://www.nlihc.org" target="_blank">www.nlihc.org</a>).
+                Out of Reach 2016 (<a href="http://www.nlihc.org" target="_blank">www.nlihc.org</a>).
               </p>
             </div>
             <div id="nyscaa-report-datakey-41">
@@ -188,8 +194,9 @@ function nyscaa_poverty_report() {
               <p>
                 Of students who attend public schools where National School Lunch Program (NSLP) is
                 offered, the percentage of enrollment that is eligible for free or reduced lunches. This does
-                not represent those attending private schools or schools that do not administer NSLP. Data
-                is provided by Hunger Solutions New York.
+                not represent those attending charter schools or schools that do not administer NSLP. Data
+                from New York State Education Department (NYSED), reporting students eligible 
+                for NSLP during January 2016.
               </p>
             </div>
           </div>
@@ -200,6 +207,80 @@ function nyscaa_poverty_report() {
             under 18, this is the percentage living in poverty. The data is from USCB Report S1702.</p>
           </div>
         </div>
+      </div>
+    <?php elseif ( $geoid == "county-poverty"): ?>
+      <div id="nyscaa-report-county-poverty-list">
+        <div id="nyscaa-report-county-poverty-title">A Comparative Look at County Poverty Levels</div>
+
+        <?php 
+          // get poverty data for all counties
+          $poverty_data = nyscaa_report_api('6240?area_ids=04000US36&area_type=state&data_county=1');
+          $county_data = $poverty_data->data->county_list;
+
+          // just get the total number(index=6) and percent (index=7) of poverty for each county
+          $county_poverty = array();
+          for($i = 0; $i< count($county_data); $i++){
+            $county_poverty[$i] = array();
+            $county_poverty[$i]["name"] = str_replace(" County, NY", "", $county_data[$i]->values[0]);
+            $county_poverty[$i]["total"] = floatval(str_replace(",", "", $county_data[$i]->values[6]));
+            $county_poverty[$i]["rate"] = floatval($county_data[$i]->values[7]);
+            $county_poverty[$i]["rank_total"] = 0;
+            $county_poverty[$i]["rank_rate"] = 0;
+          }
+          
+          // get the top 10 counties with the highest number of people in poverty         
+          sksort($county_poverty, "total");
+          for($x = 0; $x < count($county_poverty); $x++){
+            $county_poverty[$x]["rank_total"] = $x + 1; 
+          }
+          $county_poverty_top10 = array();
+          for($x = 0; $x < 9; $x++){
+             array_push($county_poverty_top10, $county_poverty[$x]["name"]);
+          }
+          array_push($county_poverty_top10, ' and ' . $county_poverty[$x]["name"]);
+
+          // get the top 10 counties with the highest percent of people in poverty 
+          sksort($county_poverty, "rate");
+          for($x = 0; $x < count($county_poverty); $x++){
+            $county_poverty[$x]["rank_rate"] = $x + 1; 
+          }
+          $county_poverty_rate10 = array();
+          for($x = 0; $x < 9; $x++){
+            array_push($county_poverty_rate10, $county_poverty[$x]["name"]);
+          }
+          array_push($county_poverty_rate10, ' and ' . $county_poverty[$x]["name"]);
+          
+          // sort the poverty data array by county name
+          sksort($county_poverty, "name", true);
+        ?>
+        The ten New York State counties with the greatest number of people living in poverty, from highest to
+        lowest, are: <?php echo implode(', ', $county_poverty_top10) ?>.
+        The ten counties with the highest percentage of the population living in poverty, from highest to lowest,
+        are: <?php echo implode(', ', $county_poverty_rate10) ?>.
+
+        <table>
+          <thead style="display: table-header-group">
+          <tr>
+            <th>County</th>
+            <th>Number in Poverty</th>
+            <th>Rank by Number</th>
+            <th>Percent in Poverty</th>
+            <th>Rank by Percent</th>
+          </tr>
+          </thead>
+          <tbody>
+          <?php
+
+          foreach($county_poverty as $county){
+            echo '<tr><td>' . $county["name"] . '</td><td>' . number_format($county["total"]) . '</td><td>' . $county["rank_total"] . 
+            '</td><td>'. $county["rate"] . '%</td><td>' . $county["rank_rate"] . '</td></tr>';
+          }
+          ?>
+          </tbody>
+        </table>
+
+        This data from the US Census Bureau's American Communities Survey (ACS) report S1701 - Poverty Status in the Past
+        12 Months, 2011 - 2015 five year estimates. (factfinder2.census.gov)
       </div>
      <?php 
      else: 
@@ -212,10 +293,13 @@ function nyscaa_poverty_report() {
          case "160":
           $sum_level = "city";
           break;
+         case "010":
+          $sum_level = "us";
+          break;
       }
       
       // get location information - NameLSAD|City|CountyMap|CityMap|Address1|Address2|Phone|NYSCAA|Logo|Url|FIPS
-      $location_data = nyscaa_report_get_json($geoid, $sum_level, '0');
+      $location_data = nyscaa_report_get_summary($geoid, $sum_level, '0');
       
       // get logo
       $location_logo = ($location_data[8] == "") ? "": $plugin_url . "/images/logos/" . $location_data[8];
@@ -225,7 +309,7 @@ function nyscaa_poverty_report() {
       $location_map = ($location_map == "")? $location_logo: $plugin_url . "/images/maps/" . $location_map;
       
       // get general poverty data
-      $poverty_data = nyscaa_report_get_json($geoid, $sum_level, '6240');
+      $poverty_data = nyscaa_report_get_summary($geoid, $sum_level, '6240');
      ?>
       <div id="nyscaa-report-infograph">
         <div id="nyscaa-report-top">
@@ -237,10 +321,10 @@ function nyscaa_poverty_report() {
           <div id="nyscaa-report-map">
                 <img src="<?php echo $location_map?>" />
           </div>
-          <?php if ($location_logo != "" && $sum_level != "state"): ?>
-          <div id="nyscaa-report-logo">
-            <img src="<?php echo $location_logo ?>" />
-          </div>
+          <?php if ($location_logo != "" && $sum_level != "state" && $sum_level != "us"): ?>
+            <div id="nyscaa-report-logo">
+              <img src="<?php echo $location_logo ?>" style="max-width: 170px; max-height:70px" />
+            </div>
           <?php endif; ?>
           <div id="nyscaa-report-address">
             <?php echo $location_data[4] ?>
@@ -252,7 +336,7 @@ function nyscaa_poverty_report() {
           <p></p>
           <div class="center-align font-bold font-mid">
             <p>
-              <?php echo ucfirst($sum_level)?> Population:<br />
+              <?php echo ($sum_level == "us")? "United States": ucfirst($sum_level)?> Population:<br />
               <?php echo $poverty_data[1]?>
             </p>
           </div>
@@ -281,7 +365,7 @@ function nyscaa_poverty_report() {
             <?php echo nyscaa_report_format_pct($poverty_data[7])?>
           </div>
           <div id="nyscaa-report-geoglevel">
-            <?php echo strtoupper($sum_level) ?>
+            <?php echo ($sum_level == "us")? "National": strtoupper($sum_level)?>
           </div>
           <div id="nyscaa-report-poverty">
             POVERTY
@@ -332,7 +416,7 @@ function nyscaa_poverty_report() {
           <div style="font-weight:700; font-size:14pt; line-height: 1.5;">
             <?php echo $location_data[7] ?>
           </div>
-          <div style="font-weight:500; font-size: 12pt; margin-bottom: 20px;">
+          <div style="font-weight:500; font-size: 12pt; margin-bottom: 10px;">
             <a href="http://<?php echo $location_data[9]?>" target="_blank"><?php echo $location_data[9]?></a>
           </div>
           
@@ -361,7 +445,7 @@ function nyscaa_poverty_report() {
           </div>
           
           <div id="nyscaa-report-content-edu" class="section-spacing">
-            <?php  $education_data = nyscaa_report_get_json($geoid, $sum_level, '6242'); ?>
+            <?php  $education_data = nyscaa_report_get_summary($geoid, $sum_level, '6242'); ?>
             <table>
               <tr>
                 <td style="text-align: left; vertical-align: bottom;">
@@ -385,12 +469,12 @@ function nyscaa_poverty_report() {
               <div class="quarter">
                 <div class="nyscaa-report-content-name center-align">No Degree</div>
                 <span class="nyscaa-report-legend-dark">&nbsp;</span> 
-                <span class="nyscaa-report-content-value">
+                <span class="nyscaa-report-content-value-sm">
                   <?php echo nyscaa_report_format_pct( $education_data[3] ) . " (" . $education_data[2] . ")"?>
                 </span>
                 <div class="nyscaa-report-content-name padding-left10">Total*</div>
                 <span class="nyscaa-report-legend-light">&nbsp;</span>
-                <span class="nyscaa-report-content-value">
+                <span class="nyscaa-report-content-value-sm">
                   <?php echo nyscaa_report_format_pct( $education_data[11] ) . " (" . $education_data[10] . ")"?>
                 </span>
                 <div class="nyscaa-report-content-name-light padding-left10">Living in Poverty</div>               
@@ -398,12 +482,12 @@ function nyscaa_poverty_report() {
               <div class="quarter">
                 <div class="nyscaa-report-content-name center-align">High School</div>
                 <span class="nyscaa-report-legend-dark">&nbsp;</span>
-                <span class="nyscaa-report-content-value">
+                <span class="nyscaa-report-content-value-sm">
                   <?php echo nyscaa_report_format_pct( $education_data[5] ) . " (" . $education_data[4] . ")"?>
                 </span>
                 <div class="nyscaa-report-content-name padding-left10">Total*</div>
                 <span class="nyscaa-report-legend-light">&nbsp;</span>
-                <span class="nyscaa-report-content-value">
+                <span class="nyscaa-report-content-value-sm">
                   <?php echo nyscaa_report_format_pct( $education_data[13] ) . " (" . $education_data[12] . ")"?>
                 </span>
                 <div class="nyscaa-report-content-name-light padding-left10">Living in Poverty</div>
@@ -411,12 +495,12 @@ function nyscaa_poverty_report() {
               <div class="quarter">
                 <div class="nyscaa-report-content-name center-align">Associate</div>
                 <span class="nyscaa-report-legend-dark">&nbsp;</span>
-                <span class="nyscaa-report-content-value">
+                <span class="nyscaa-report-content-value-sm">
                   <?php echo nyscaa_report_format_pct( $education_data[7] ) . " (" . $education_data[6] . ")"?>
                 </span>
                 <div class="nyscaa-report-content-name padding-left10">Total*</div>
                 <span class="nyscaa-report-legend-light">&nbsp;</span>
-                <span class="nyscaa-report-content-value">
+                <span class="nyscaa-report-content-value-sm">
                   <?php echo nyscaa_report_format_pct( $education_data[15] ) . " (" . $education_data[14] . ")"?>
                 </span>
                 <div class="nyscaa-report-content-name-light padding-left10">Living in Poverty</div>
@@ -424,12 +508,12 @@ function nyscaa_poverty_report() {
               <div class="quarter">
                 <div class="nyscaa-report-content-name center-align">Bachelors or Higher</div>
                 <span class="nyscaa-report-legend-dark">&nbsp;</span>
-                <span class="nyscaa-report-content-value">
+                <span class="nyscaa-report-content-value-sm">
                   <?php echo nyscaa_report_format_pct( $education_data[9] ) . " (" . $education_data[8] . ")"?>
                 </span>
                 <div class="nyscaa-report-content-name padding-left10">Total*</div>
                 <span class="nyscaa-report-legend-light">&nbsp;</span>
-                <span class="nyscaa-report-content-value">
+                <span class="nyscaa-report-content-value-sm">
                   <?php echo nyscaa_report_format_pct( $education_data[17] ) . " (" . $education_data[16] . ")"?>
                 </span>
                 <div class="nyscaa-report-content-name-light padding-left10">Living in Poverty</div>
@@ -444,8 +528,8 @@ function nyscaa_poverty_report() {
             <div id="emp-part1">
               <img src="<?php echo $plugin_url ?>/images/income.png" style="height: 80px;"/>
                 <?php 
-                if ( $sum_level != "city" ): 
-                  $living_wage =  nyscaa_report_get_json($geoid, $sum_level, '6085');                  
+                if ( $sum_level != "city" && $sum_level != "us" ): 
+                  $living_wage =  nyscaa_report_get_summary($geoid, $sum_level, '6085');                  
              ?>
               <div class="dark-blue-text center-align" style="padding: 5px 15px 0 5px">
                 Living Wage for <br />1  Adult, 1 Child Household
@@ -460,21 +544,25 @@ function nyscaa_poverty_report() {
                 <div class="nyscaa-report-content-title">Employment</div>
                 <div class="nyscaa-report-content-title2">&amp; Poverty</div>
                 
-                <?php
-                  if ($sum_level != "city" ):
-                     $hourly_wage = nyscaa_report_get_json($geoid, $sum_level, '6091');
-                ?>
-                <div class="dark-blue-text center-align" style="margin-top: 20px" >
-                  Hourly Wage for <br />FRM, 2BR Apartment
-                </div>
-                <div class="center-align">
-                  <b><?php echo $hourly_wage[4] ?></b>
-                </div>
+                <?php if ($sum_level != "city"): ?>
+                  <div class="dark-blue-text center-align" style="margin-top: 20px" >
+                    Hourly Wage for <br />FRM, 2BR Apartment
+                  </div>
+                  <div class="center-align">
+                    <b><?php 
+                    if ($sum_level == "us"){
+                      echo "$20.30";
+                    }else{
+                      $hourly_wage = nyscaa_report_get_summary($geoid, $sum_level, '6091');                      
+                      echo $hourly_wage[4];
+                    }
+                    ?></b>
+                  </div>
               <?php 
                 endif; 
 
                 // get median income data
-                $median_income = nyscaa_report_get_json($geoid, $sum_level, '6241');
+                $median_income = nyscaa_report_get_summary($geoid, $sum_level, '6241');
               ?>                
               </div>
               <div id="emp-part2-b" class="center-align">
@@ -492,7 +580,7 @@ function nyscaa_poverty_report() {
           </div>
 
           <div id="nyscaa-report-content-health" class="section-spacing">
-            <?php $health_data = nyscaa_report_get_json($geoid, $sum_level, '6243'); ?>
+            <?php $health_data = nyscaa_report_get_summary($geoid, $sum_level, '6243'); ?>
             <div id="health-part1">
               <div class="nyscaa-report-content-title">Health</div>
               <div class="nyscaa-report-content-title2">&amp; Poverty</div>
@@ -511,20 +599,25 @@ function nyscaa_poverty_report() {
                 <?php if ($sum_level != "city" ): ?>
                 <div class="nyscaa-report-content-title3">Free/Reduced Lunch Program</div>
                 <p></p>
-                <img src="<?php echo $plugin_url?>/images/school-lunch.png" style="height: 50px"/>
+                <?php if ($sum_level == "us"): ?>
+                <img src="<?php echo $plugin_url?>/images/school-lunch.png" style="height: 50px; float: left"/>
+                <b>22 million children receive free or reduced lunch each day in 2016.</b>
+                <?php else: ?>
+                  <img src="<?php echo $plugin_url?>/images/school-lunch.png" style="height: 50px"/>
                   <span style="font-size: 50pt; line-height: 1; font-family: Bodoni MT,Garamond,Times New Roman,serif;" class="dark-blue-text">
-                    <?php
-                    $fr_lunch_data = nyscaa_report_get_json($geoid, $sum_level, '6144'); 
+                    <?php                   
+                    $fr_lunch_data = nyscaa_report_get_summary($geoid, $sum_level, '6144'); 
                     echo nyscaa_report_format_pct($fr_lunch_data[3], 0);
                     ?>
                   </span>
+                  <?php endif; ?> 
                 <?php endif; ?>
               </div>
             </div>
           </div>
 
           <div id="nyscaa-report-content-gender" class="section-spacing">
-            <?php $earning_data = nyscaa_report_get_json($geoid, $sum_level, '6245'); ?>
+            <?php $earning_data = nyscaa_report_get_summary($geoid, $sum_level, '6245'); ?>
             <div id="gender-part1" class="gray-border">
               <div id="gender-part1-a">
                 <div class="nyscaa-report-content-title">Gender</div>
@@ -553,7 +646,7 @@ function nyscaa_poverty_report() {
               <div class="dark-blue-text">and Children Present</div>
               <div class="dark-blue-text" style="font-size: 18pt; margin-top: 10px;">
                 <?php 
-                  $female_pov = nyscaa_report_get_json($geoid, $sum_level, '6244'); 
+                  $female_pov = nyscaa_report_get_summary($geoid, $sum_level, '6244'); 
                   echo nyscaa_report_format_pct( $female_pov[2] );
                 ?>
                 <br />
@@ -562,16 +655,16 @@ function nyscaa_poverty_report() {
             </div>
 
             <div id="nyscaa-report-footer-povrate" class="clear-float center-align light-blue-text">
-              US Poverty Rate: 15.6%
+              US Poverty Rate: 15.5%
               <img src="<?php echo $plugin_url?>/images/light-blue-dot.png" />
-                NYS Poverty Rate: 15.6%
+                NYS Poverty Rate: 15.7%
                 <?php
                   // if report is for a city, show county poverty rate
                   if ($sum_level == "city") {
                     echo "<img src='" . $plugin_url . "/images/light-blue-dot.png' />";
                     
                     // get county poverty data
-                    $poverty_data = nyscaa_report_get_json('05000US' . preg_replace( '/[^0-9.]/', '', $location_data[10]), 'county', '6240');
+                    $poverty_data = nyscaa_report_get_summary('05000US' . preg_replace( '/[^0-9.]/', '', $location_data[10]), 'county', '6240');
                     echo $location_data[0] . " Poverty Rate: " . nyscaa_report_format_pct( $poverty_data[7] );
                   }
                 ?>
@@ -606,14 +699,20 @@ function nyscaa_report_console_log( $data ){
 }
 
 // get json object from API service
-function nyscaa_report_get_json($area_ids, $area_type = 'county', $data_id='0'){
-	$api_url = 'https://services.communitycommons.org/api-report/v1/indicator/NYSCAA-Poverty/';
-	$api_url .= $data_id . '?area_ids=' . $area_ids . '&area_type=' . $area_type;
-  nyscaa_report_console_log($api_url);
-	$result = file_get_contents($api_url);
-  $json =  json_decode($result);
+function nyscaa_report_api($api_params){
+  	$api_url = 'https://services.communitycommons.org/api-report/v1/indicator/NYSCAA-Poverty/';
+	  $api_url .= $api_params;
+    //nyscaa_report_console_log($api_url);
+	  $result = file_get_contents($api_url);
+    $json =  json_decode($result);
+    return $json;
+}
+
+function nyscaa_report_get_summary($area_ids, $area_type = 'county', $data_id='0'){
+	$param = $data_id . '?area_ids=' . $area_ids . '&area_type=' . $area_type . $more;
+  $json = nyscaa_report_api($param);
   $values = $json->data->summary->values;
-  nyscaa_report_console_log($values);
+  //nyscaa_report_console_log($values);
 	return $values;
 }
 
@@ -625,3 +724,35 @@ function nyscaa_report_format_pct($value, $digit = 1){
 		return number_format($value, $digit) . "%";
 	}
 }
+
+// sort an array by the key of it sub-array
+function sksort(&$array, $subkey="name", $sort_ascending=false) {
+    if (count($array)){
+      $temp_array[key($array)] = array_shift($array);
+    }
+
+    foreach($array as $key => $val){
+        $offset = 0;
+        $found = false;
+        foreach($temp_array as $tmp_key => $tmp_val)
+        {
+            if(!$found and strtolower($val[$subkey]) > strtolower($tmp_val[$subkey]))
+            {
+                $temp_array = array_merge(    (array)array_slice($temp_array,0,$offset),
+                                            array($key => $val),
+                                            array_slice($temp_array,$offset)
+                                          );
+                $found = true;
+            }
+            $offset++;
+        }
+        if(!$found) $temp_array = array_merge($temp_array, array($key => $val));
+    }
+
+    if ($sort_ascending) {
+      $array = array_reverse($temp_array);
+    } else {
+      $array = $temp_array;
+    }
+}
+

@@ -134,6 +134,28 @@
   color: #002395;
   font-weight: bold;
 }
+#nyscaa-report-content #nyscaa-report-county-poverty-list #nyscaa-report-county-poverty-title {
+  color: #2B5799;
+  font-size: 20pt;
+  font-weight: 700;
+  margin-bottom: 25px;
+  text-align: center;
+}
+#nyscaa-report-content #nyscaa-report-county-poverty-list table {
+  margin: 20px 0;
+}
+#nyscaa-report-content #nyscaa-report-county-poverty-list th,
+#nyscaa-report-content #nyscaa-report-county-poverty-list td {
+  border: 1px solid #999;
+  padding: 7px;
+  font-size: 13px;
+  text-align: center;
+  color: #333;
+}
+#nyscaa-report-content #nyscaa-report-county-poverty-list th {
+  line-height: 1.5;
+  font-weight: 700;
+}
 #nyscaa-report-content #nyscaa-report-infograph .quarter {
   width: 100%;
 }
@@ -162,6 +184,7 @@
 }
 #nyscaa-report-content #nyscaa-report-infograph #nyscaa-report-content-left #nyscaa-report-address {
   line-height: 130%;
+  white-space: nowrap;
 }
 #nyscaa-report-content #nyscaa-report-infograph #nyscaa-report-content-left #nyscaa-report-popnote {
   font-style: italic;
@@ -240,18 +263,18 @@
 }
 #nyscaa-report-content #nyscaa-report-infograph .nyscaa-report-content-title {
   font-family: Impact, sans-serif;
-  font-size: 25pt;
+  font-size: 30pt;
   font-weight: 700;
   color: #002395;
-  line-height: 1.3;
+  line-height: 1.2;
 }
 #nyscaa-report-content #nyscaa-report-infograph .nyscaa-report-content-title2 {
-  font-size: 20pt;
-  font-weight: 700;
+  font-size: 23pt;
+  font-weight: 400;
   color: #002395;
   font-family: Impact, sans-serif;
   line-height: 1.2em;
-  letter-spacing: 1px;
+  letter-spacing: 0.8px;
 }
 #nyscaa-report-content #nyscaa-report-infograph .nyscaa-report-content-title3 {
   font-size: 14pt;
@@ -272,6 +295,11 @@
 #nyscaa-report-content #nyscaa-report-infograph .nyscaa-report-content-value {
   padding: 1px 0;
   font-weight: 700;
+}
+#nyscaa-report-content #nyscaa-report-infograph .nyscaa-report-content-value-sm {
+  padding: 1px 0;
+  font-weight: 600;
+  font-size: 90%;
 }
 #nyscaa-report-content #nyscaa-report-infograph .nyscaa-report-legend-dark {
   border: 1px solid #000;
@@ -315,6 +343,7 @@
   #nyscaa-report-content #nyscaa-report-infograph #nyscaa-report-content-health #health-part1 {
     width: 25%;
     float: left;
+    padding-top: 15pt;
   }
   #nyscaa-report-content #nyscaa-report-infograph #nyscaa-report-content-health #health-part2 {
     width: 74.9%;
@@ -365,12 +394,12 @@
   }
   #nyscaa-report-content #nyscaa-report-datakey #nyscaa-report-wagekey {
     float: left;
-    width: 42%;
+    width: 41%;
     padding: 10px 20px 0 0;
   }
   #nyscaa-report-content #nyscaa-report-datakey #nyscaa-report-datakey-41 {
     float: left;
-    width: 54%;
+    width: 55%;
   }
   #nyscaa-report-content #nyscaa-report-infograph .quarter {
     width: 25%;

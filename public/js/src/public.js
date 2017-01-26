@@ -124,6 +124,12 @@
                 }
             };
 
+            // for county-comparion list, show page number and set a top margin
+            if (window.location.search.indexOf("geoid=county-poverty") !== -1) {
+                post.pdf.show_pagenumber = true;
+                post.pdf.page_margin[0] = 20;
+            }
+
             var errMsg = "Conversion to PDF failed. Please try again or contact us.";
             $.ajax({
                 type: "POST",

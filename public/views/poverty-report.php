@@ -341,7 +341,7 @@ function nyscaa_poverty_report() {
             </p>
           </div>
           <div id="nyscaa-report-popnote">
-            Population for whom poverty status is determind:
+            Population for whom poverty status is determined:
           </div>
           <div id="nyscaa-report-pop-age">
             Overall<br/>

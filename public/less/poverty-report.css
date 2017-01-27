@@ -172,7 +172,8 @@
   margin-top: -15px;
 }
 #nyscaa-report-content #nyscaa-report-infograph #nyscaa-report-content-left #nyscaa-report-map img {
-  max-width: 250px;
+  max-width: 225px;
+  max-height: 210px;
 }
 #nyscaa-report-content #nyscaa-report-infograph #nyscaa-report-content-left #nyscaa-report-logo {
   clear: left;
@@ -375,7 +376,7 @@
     width: 35%;
   }
 }
-@media all and (min-width: 750px) {
+@media all and (min-width: 770px) {
   #nyscaa-report-content #nyscaa-report-datakey #nyscaa-report-datakey-left {
     width: 26%;
     padding-right: 10px;
@@ -418,6 +419,23 @@
     width: 71%;
     float: left;
     padding-left: 10px;
+  }
+}
+@media all and (max-width: 769px) {
+  #nyscaa-report-content #nyscaa-report-infograph {
+    text-align: center;
+  }
+  #nyscaa-report-content #nyscaa-report-infograph #nyscaa-report-top {
+    margin-bottom: 30px;
+  }
+  #nyscaa-report-content #nyscaa-report-infograph #nyscaa-report-content-right {
+    padding-top: 30px;
+  }
+  #nyscaa-report-content #nyscaa-report-infograph #nyscaa-report-content-right #nyscaa-report-content-race {
+    border-top: 10px solid #ddd;
+  }
+  #nyscaa-report-content #nyscaa-report-infograph #nyscaa-report-content-right .quarter {
+    margin-bottom: 20px;
   }
 }
 #nyscaa-report-content #nyscaa-report-infograph .quarter {

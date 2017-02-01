@@ -364,12 +364,12 @@
   }
   #nyscaa-report-content #nyscaa-report-infograph #nyscaa-report-content-gender #gender-part1 #gender-part1-a {
     float: left;
-    width: 49%;
+    width: 38%;
   }
   #nyscaa-report-content #nyscaa-report-infograph #nyscaa-report-content-gender #gender-part1 #gender-part1-b,
   #nyscaa-report-content #nyscaa-report-infograph #nyscaa-report-content-gender #gender-part1 #gender-part1-c {
     float: left;
-    width: 25%;
+    width: 30%;
   }
   #nyscaa-report-content #nyscaa-report-infograph #nyscaa-report-content-gender #gender-part2 {
     float: right;

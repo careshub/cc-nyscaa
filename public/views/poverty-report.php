@@ -34,6 +34,9 @@ function nyscaa_poverty_report() {
 			<div id="nyscaa-report-selection" class="report-control-header clear">
 				<h3 class="screamer">POVERTY DATA: Create a poverty report for your community</h3>
         <p>
+        <a href="<?php echo $plugin_url?>/images/NYSCAA_PovertyReport_NY.pdf">
+          <img src="<?php echo $plugin_url?>/images/ny-poverty.png" style="float: right; width: 150px; border: 1px solid #dedede; margin-left: 30px;" />
+        </a>
           The New York State Community Action Association (NYSCAA) is pleased to present its online edition of the New York State Poverty Report. 
           Providing a statewide look at poverty, this tool is designed to be a comprehensive resource for New York’s Community Action Agencies, 
           community-based organizations, policy makers, advocates, community coalitions and the general public. 
@@ -104,7 +107,7 @@ function nyscaa_poverty_report() {
             children under 18, adults over 25 and adults over 65.</p>
           <p>The percentage of each group living in poverty is followed by the number of individuals that percentage represents.</p>
           <p>Families in Poverty Data is from USCB Report S1702 and indicates the percentage of all families with a female head of
-            household and at least one child under 18 that are living in poverty.</p>
+            household and at least one child under 18 who is living in poverty.</p>
           <div class="nyscaa-report-datakey-note center-align">
             <p>
             ALL Census Reports cited are from the American Communities Survey FIVE year estimates (2011 - 2015). <br />
@@ -170,7 +173,7 @@ function nyscaa_poverty_report() {
               <p>
                 <b>Hourly Wage -</b>
                 The hourly rate listed is that which one person would need to earn working year round, 40 hours per
-                week in order to afford a 2 bedroom apartment at the fair market rate (FMR) for that county, assuming 30% of income
+                week in order to afford a two bedroom apartment at the fair market rate (FMR) for that county, assuming 30% of income
                 is spent on housing. Data is provided by the National Low Income Housing Coalition's report: 
                 Out of Reach 2016 (<a href="http://www.nlihc.org" target="_blank">www.nlihc.org</a>).
               </p>
@@ -528,7 +531,7 @@ function nyscaa_poverty_report() {
             <div id="emp-part1">
               <img src="<?php echo $plugin_url ?>/images/income.png" style="height: 80px;"/>
                 <?php 
-                if ( $sum_level != "city" && $sum_level != "us" ): 
+                if ( $sum_level != "city" && $sum_level != "us"): 
                   $living_wage =  nyscaa_report_get_summary($geoid, $sum_level, '6085');                  
              ?>
               <div class="dark-blue-text center-align" style="padding: 5px 15px 0 5px">
@@ -546,7 +549,7 @@ function nyscaa_poverty_report() {
                 
                 <?php if ($sum_level != "city"): ?>
                   <div class="dark-blue-text center-align" style="margin-top: 20px" >
-                    Hourly Wage for <br />FRM, 2BR Apartment
+                    Hourly Wage for <br />FMR, 2BR Apartment
                   </div>
                   <div class="center-align">
                     <b><?php 
@@ -568,12 +571,12 @@ function nyscaa_poverty_report() {
               <div id="emp-part2-b" class="center-align">
                 <div class="dark-blue-text">Median Income</div>
                 <div class="center-align">
-                  <b>$<?php echo $median_income[1]?></b>
+                  <?php echo nyscaa_report_check_nodata($median_income[1])?>
                 </div>
 
                 <div class="dark-blue-text" style="margin-top: 10px;">Median Income <br />w/High School Diploma</div>
                 <div class="center-align">
-                  <b>$<?php echo $median_income[2]?></b>
+                  <?php echo nyscaa_report_check_nodata($median_income[2])?>
                 </div>                
               </div>
             </div>      
@@ -600,8 +603,9 @@ function nyscaa_poverty_report() {
                 <div class="nyscaa-report-content-title3">Free/Reduced Lunch Program</div>
                 <p></p>
                 <?php if ($sum_level == "us"): ?>
-                <img src="<?php echo $plugin_url?>/images/school-lunch.png" style="height: 50px; float: left"/>
-                <b>22 million children receive free or reduced lunch each day in 2016.</b>
+                <img src="<?php echo $plugin_url?>/images/school-lunch.png" style="height: 50px; float: left; margin-right: 10px;"/>
+                <b>
+                  22 million children received free or reduced lunch each day in 2016</b>
                 <?php else: ?>
                   <img src="<?php echo $plugin_url?>/images/school-lunch.png" style="height: 50px"/>
                   <span style="font-size: 50pt; line-height: 1; font-family: Bodoni MT,Garamond,Times New Roman,serif;" class="dark-blue-text">
@@ -625,18 +629,16 @@ function nyscaa_poverty_report() {
                 <div class="nyscaa-report-content-title3">High School Diploma Only</div>
               </div>
 
-              <div id="gender-part1-b" style="padding-top: 20px;" class="center-align">
+              <div id="gender-part1-b" style="padding-top: 10px;" class="center-align">
                 <img src="<?php echo $plugin_url?>/images/male.png" style="height: 70px"/>
-                  <div class="dark-blue-text">Median Earnings</div>
-                  <b>$<?php echo $earning_data[1]?></b>
+                  <div class="dark-blue-text">Median<br />Earnings</div>
+                  <?php echo nyscaa_report_check_nodata($earning_data[1])?>
               </div>
 
-              <div id="gender-part1-b" style="padding-top: 20px;" class="center-align">
+              <div id="gender-part1-b" style="padding-top: 10px;" class="center-align">
                 <img src="<?php echo $plugin_url?>/images/female.png" style="height: 70px"/>
-                  <div class="dark-blue-text">Median Earnings</div>
-                <b>
-                  $<?php echo $earning_data[2]?>
-                </b>
+                  <div class="dark-blue-text">Median<br />Earnings</div>
+                  <?php echo nyscaa_report_check_nodata($earning_data[2])?>
               </div>
             </div>
 
@@ -723,6 +725,11 @@ function nyscaa_report_format_pct($value, $digit = 1){
 	}else{
 		return number_format($value, $digit) . "%";
 	}
+}
+
+// handle 'no data'
+function nyscaa_report_check_nodata($value){
+  return ( strpos($value, 'no data') !== false )? 'data not available': '<b>$' . $value . '</b>'; 
 }
 
 // sort an array by the key of it sub-array

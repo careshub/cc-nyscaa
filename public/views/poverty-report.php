@@ -81,10 +81,6 @@ function nyscaa_poverty_report() {
     ?>
 		<div id="nyscaa-report-action-top" class="nyscaa-report-action">
 		<input type="button" class="button nyscaa-report-export" id="nyscaa-report-export-top" value="Export Report to PDF" />
-			<?php if ( $can_save) : ?>
-				<input type="button" class="button nyscaa-report-save" id="nyscaa-report-save-top" value="Save Report to My Library" />
-				<div id="report-save-message-top" class="report-processing-msg">Saving your report, please wait...</div>
-			<?php endif; ?>
 		</div>
 		<div id="nyscaa-report-content">
     <?php if ( $geoid == "datakey" ): ?>
@@ -679,10 +675,6 @@ function nyscaa_poverty_report() {
     <div class="nyscaa-report-action"></div>
     <div id="nyscaa-report-action-bottom" class="nyscaa-report-action">
       <input type="button" class="button nyscaa-report-export" id="nyscaa-report-export-bottom" value="Export Report to PDF" />
-      <?php if ( $can_save ) : ?>
-      <input type="button" class="button nyscaa-report-save" id="nyscaa-report-save-bottom" value="Save Report to My Library" />
-      <div id="report-save-message-top" class="report-processing-msg">Saving your report, please wait...</div>
-      <?php endif; ?>
 
       <input type="hidden" id="nyscaa-report-geoid" value="<?php echo $geoid ?>" />
       <input type="hidden" id="nyscaa-report-area" value="<?php echo $report_area ?>" />

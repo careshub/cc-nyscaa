@@ -195,7 +195,7 @@ function nyscaa_poverty_report() {
                 offered, the percentage of enrollment that is eligible for free or reduced lunches. This does
                 not represent those attending charter schools or schools that do not administer NSLP. Data
                 from New York State Education Department (NYSED), reporting students eligible 
-                for NSLP during January 2016.
+                for NSLP during January 2017.
               </p>
             </div>
           </div>
@@ -604,12 +604,22 @@ function nyscaa_poverty_report() {
                   22 million children received free or reduced lunch each day in 2016</b>
                 <?php else: ?>
                   <img src="<?php echo $plugin_url?>/images/school-lunch.png" style="height: 50px"/>
-                  <span style="font-size: 50pt; line-height: 1; font-family: Bodoni MT,Garamond,Times New Roman,serif;" class="dark-blue-text">
-                    <?php                   
+                  <?php 
                     $fr_lunch_data = nyscaa_report_get_summary($geoid, $sum_level, '6144'); 
-                    echo nyscaa_report_format_pct($fr_lunch_data[3], 0);
+                    
+                    if ($fr_lunch_data[3] != 0):
+                  ?>              
+                    <span style="font-size: 50pt; line-height: 1; font-family: Bodoni MT,Garamond,Times New Roman,serif;" class="dark-blue-text">
+                      <?php                   
+                      $fr_lunch_data = nyscaa_report_get_summary($geoid, $sum_level, '6144'); 
+                      echo nyscaa_report_format_pct($fr_lunch_data[3], 0);
+                      ?>
+                    </span>
+                    <?php
+                    else:
+                      echo "<span style='vertical-align:top;line-height:3'>Data not available</span>";
+                    endif;
                     ?>
-                  </span>
                   <?php endif; ?> 
                 <?php endif; ?>
               </div>

@@ -38,12 +38,6 @@
                     $("#nyscaa-report-city-list").append($("<option></option>").val(v.id).html(v.name));
                 });
             });
-        } else {
-            // KISS tracking for loading a report card -- either directly from shared link or this tool
-            var geoid = $("#nyscaa-report-geoid").length ? $("#nyscaa-report-geoid").val() : "";
-            if (geoid !== "") {
-                _kmq.push(['record', 'opened a salud report card', { 'geoid': geoid }]);
-            }
         }
 
         // Handle county selection

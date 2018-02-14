@@ -106,7 +106,7 @@ function nyscaa_poverty_report() {
             household and at least one child under 18 who is living in poverty.</p>
           <div class="nyscaa-report-datakey-note center-align">
             <p>
-            ALL Census Reports cited are from the American Communities Survey FIVE year estimates (2011 - 2015). <br />
+            ALL Census Reports cited are from the American Communities Survey FIVE year estimates (2012 - 2016). <br />
             Access these reports at: <a href="http://factfinder2.census.gov" target="_blank">factfinder2.census.gov</a>
             </p>
           </div>
@@ -164,7 +164,7 @@ function nyscaa_poverty_report() {
                 The wage listed is the wage an individual would need to earn as the sole provider for a household consisting
                 of themselves and one child based on the typical expenses in that county or city. This wage is a minimum estimate of the
                 cost of living for a low wage family. Data from Massachusetts Institute of Technology Living Wage Calculator
-                (<a href="http://livingwage.mit.edu" target="_blank">livingwage.mit.edu</a>), released in June 2016.
+                (<a href="http://livingwage.mit.edu" target="_blank">livingwage.mit.edu</a>), released in January, 2018.
               </p>
               <p>
                 <b>Hourly Wage -</b>
@@ -279,7 +279,7 @@ function nyscaa_poverty_report() {
         </table>
 
         This data from the US Census Bureau's American Communities Survey (ACS) report S1701 - Poverty Status in the Past
-        12 Months, 2011 - 2015 five year estimates. (factfinder2.census.gov)
+        12 Months, 2012 - 2016 five year estimates. (factfinder2.census.gov)
       </div>
      <?php 
      else: 

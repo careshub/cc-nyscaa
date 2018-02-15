@@ -412,7 +412,7 @@ function nyscaa_poverty_report() {
             <?php echo ($sum_level == "city")? $location_data[1]: $location_data[0] ?>
           </div>
 
-          <div style="font-weight:700; font-size:14pt; line-height: 1.5;">
+          <div style="font-weight:700; font-size:14pt; line-height: 21pt;" id="program-name">
             <?php echo $location_data[7] ?>
           </div>
           <div style="font-weight:500; font-size: 12pt; margin-bottom: 10px;">

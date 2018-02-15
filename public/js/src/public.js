@@ -99,6 +99,14 @@
                         htmContent += "<link type='text/css' rel='stylesheet' href='" + css_file + "' />";
                     });
 
+            // check for long program name
+            var $progName = $("#program-name");
+            var numCha = $progName.html().trim().length;
+            console.log(numCha);
+            if (numCha > 53) {
+                $progName.css({ "font-size": Math.floor(14 * 53 / numCha) + "pt" });
+            }
+
             // add report content
             var contentId = "nyscaa-report-content";
             var reportContent = $("#" + contentId).html();

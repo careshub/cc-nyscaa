@@ -1,0 +1,8 @@
+[
+  {
+    "outputFileName": "public/js/src/public.min.js",
+    "inputFiles": [
+      "public/js/src/public.js"
+    ]
+  }
+]
